@@ -1,4 +1,5 @@
 var request = require('request-promise');
+const async = require('async');
 
 const API_ENDPOINT = 'https://aweme.snssdk.com/aweme/v1';
 
@@ -38,6 +39,7 @@ request = request.defaults({
     'sdk-version': '1',
     'X-SS-TC': '0',
   },
+  json: 1,
   // proxy: 'http://localhost:8888',
   // strictSSL: false
 })
@@ -140,17 +142,48 @@ getUserInfoByUid = ({ user_id }) => {
   return request(API_ENDPOINT+'/user/', {user_id});
 }
 
-getUserPostByUid = ({ user_id, cursor, count }) => {
-  return request(API_ENDPOINT+'/aweme/post/', {qs: {user_id, max_cursor: cursor, count}})
+getUserPostByUid = ({ user_id, max_cursor, count }) => {
+  return request(API_ENDPOINT+'/aweme/post/', {qs: {user_id, max_cursor, count}});
+}
+
+getAllUserPostByUid = ({ user_id }) => {
+  return new Promise(resolve => {
+    max_cursor = null;
+
+    let posts = [];
+
+    async.doWhilst(
+      cb => {
+        getUserPostByUid({ count: 25, user_id, max_cursor })
+          .then(data => {
+            posts = posts.concat(data.aweme_list);
+
+            max_cursor = null;
+
+            if (data.has_more) max_cursor = data.max_cursor;
+
+            cb();
+          })
+          .catch(cb);
+      }, 
+      () => max_cursor,
+      (err, data) => {
+        if (err) throw err;
+
+        resolve(posts);
+      }
+    );
+  });
 }
 
 // searchItem({ keyword: '猫' }).then(console.log);
 // searchMusic({ keyword: '猫' }).then(console.log);
 // searchChallenge({ keyword: '猫' }).then(console.log);
-// searchAll({ keyword: 'minmin0313' }).then(console.log);
+// searchAll({ keyword: 'xxn520' }).then(console.log);
 // getSuggestions({ keyword: '猫' }).then(console.log);
 // getFeed().then(console.log);
 // getUserInfoByUid({ user_id: 95599520856 }).then(console.log);
 // getUserPostByUid({ user_id: 82480311983, count: 10 }).then(console.log);
+// getAllUserPostByUid({ user_id: 82480311983 }).then(res => console.log(res.length));
 
-module.exports = { getFeed, getSuggestions, searchSingle, searchItem, searchAll, searchMusic, searchChallenge, getUserInfoByUid, getUserPostByUid, request }
+module.exports = { request, getFeed, getSuggestions, searchSingle, searchItem, searchAll, searchMusic, searchChallenge, getUserInfoByUid, getUserPostByUid, getAllUserPostByUid }
