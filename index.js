@@ -136,11 +136,21 @@ searchChallenge = (qs) => {
   });
 }
 
+getUserInfoByUid = (qs) => {
+  return request(API_ENDPOINT+'/user/', {qs});
+}
+
+getUserPostByUid = ({ user_id, cursor, count }) => {
+  return request(API_ENDPOINT+'/aweme/post/', {qs: {user_id, max_cursor: cursor, count}})
+}
+
 // searchItem({ keyword: '猫' }).then(console.log);
 // searchMusic({ keyword: '猫' }).then(console.log);
 // searchChallenge({ keyword: '猫' }).then(console.log);
-// searchAll({ keyword: '猫' }).then(console.log);
+// searchAll({ keyword: 'minmin0313' }).then(console.log);
 // getSuggestions({ keyword: '猫' }).then(console.log);
 // getFeed().then(console.log);
+// getUserInfoByUid({ user_id: 95599520856 }).then(console.log);
+// getUserPostByUid({ user_id: 82480311983, count: 10 }).then(console.log);
 
-module.exports = { getFeed }
+module.exports = { getFeed, getSuggestions, searchSingle, searchItem, searchAll, searchMusic, searchChallenge, getUserInfoByUid, getUserPostByUid }
