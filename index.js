@@ -136,8 +136,8 @@ searchChallenge = (qs) => {
   });
 }
 
-getUserInfoByUid = (qs) => {
-  return request(API_ENDPOINT+'/user/', {qs});
+getUserInfoByUid = ({ user_id }) => {
+  return request(API_ENDPOINT+'/user/', {user_id});
 }
 
 getUserPostByUid = ({ user_id, cursor, count }) => {
