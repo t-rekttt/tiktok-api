@@ -153,4 +153,4 @@ getUserPostByUid = ({ user_id, cursor, count }) => {
 // getUserInfoByUid({ user_id: 95599520856 }).then(console.log);
 // getUserPostByUid({ user_id: 82480311983, count: 10 }).then(console.log);
 
-module.exports = { getFeed, getSuggestions, searchSingle, searchItem, searchAll, searchMusic, searchChallenge, getUserInfoByUid, getUserPostByUid }
+module.exports = { getFeed, getSuggestions, searchSingle, searchItem, searchAll, searchMusic, searchChallenge, getUserInfoByUid, getUserPostByUid, request }
