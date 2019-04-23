@@ -1,7 +1,11 @@
 var request = require('request-promise');
 const async = require('async');
 
+// China version
 const API_ENDPOINT = 'https://aweme.snssdk.com/aweme/v1';
+
+// VN version
+// const API_ENDPOINT = 'https://api.tiktokv.com/aweme/v1';
 
 request = request.defaults({
   qs: {
