@@ -1,12 +1,6 @@
 var request = require('request-promise');
 const async = require('async');
 
-// China version
-const API_ENDPOINT = 'https://aweme.snssdk.com/aweme/v1';
-
-// VN version
-// const API_ENDPOINT = 'https://api.tiktokv.com/aweme/v1';
-
 request = request.defaults({
   qs: {
     "js_sdk_version": "1.2.2",
@@ -46,148 +40,146 @@ request = request.defaults({
   json: 1,
   // proxy: 'http://localhost:8888',
   // strictSSL: false
-})
+});
 
-getFeed = (qs) => {
-  return request(API_ENDPOINT+'/feed/', {
+class tiktok {
+  constructor(country = null) {
+    const API_ENDPOINT = 'https://aweme.snssdk.com/aweme/v1';
+
+    if (country.toLowerCase() === 'vn') this.API_ENDPOINT = 'https://api.tiktokv.com/aweme/v1';
+  }
+
+  getFeed(qs) {
+    return request(this.API_ENDPOINT+'/feed/', {
+        qs: {
+          "type": "0",
+          "max_cursor": "0",
+          "min_cursor": "0",
+          "count": "6",
+          "volume": "1",
+          "pull_type": "0",
+          "need_relieve_aweme": "0",
+          "filter_warn": "0",
+          "is_cold_start": "0",
+          ...qs
+        }
+      });
+  }
+
+  getSuggestions(qs) {
+    return request(this.API_ENDPOINT+'/search/sug/', {
       qs: {
-        "type": "0",
-        "max_cursor": "0",
-        "min_cursor": "0",
-        "count": "6",
-        "volume": "1",
-        "pull_type": "0",
-        "need_relieve_aweme": "0",
-        "filter_warn": "0",
-        "is_cold_start": "0",
+        // "keyword": "cat",
         ...qs
       }
     });
-}
+  }
 
-getSuggestions = (qs) => {
-  return request(API_ENDPOINT+'/search/sug/', {
-    qs: {
-      // "keyword": "cat",
-      ...qs
-    }
-  });
-}
-
-searchSingle = (qs) => {
-  return request(API_ENDPOINT+'/general/search/single/', {
-    qs: {
-      // "keyword": "cat",
-      "offset": "0",
-      "count": "10",
-      "is_pull_refresh": "0",
-      "hot_search": "0",
-      ...qs
-    }
-  });
-}
-
-searchItem = (qs) => {
-  return request(API_ENDPOINT+'/search/item/', {
-    qs: {
-      // "keyword": "cat",
-      "offset": "0",
-      "count": "10",
-      "source": "video_search",
-      "is_pull_refresh": "1",
-      "hot_search": "0",
-      ...qs
-    }
-  });
-}
-
-searchAll = (qs) => {
-  return request(API_ENDPOINT+'/discover/search/', {
-    qs: {
-      // "keyword": "cat",
-      "cursor": "0",
-      "count": "10",
-      "type": "1",
-      "is_pull_refresh": "1",
-      "hot_search": "0",
-      ...qs
-    }
-  });
-}
-
-searchMusic = (qs) => {
-  return request(API_ENDPOINT+'/music/search/', {
-    qs: {
-      // "keyword": "cat",
-      "cursor": "0",
-      "count": "10",
-      "is_pull_refresh": "1",
-      "hot_search": "0",
-      ...qs
-    }
-  });
-}
-
-searchChallenge = (qs) => {
-  return request(API_ENDPOINT+'/challenge/search/', {
-    qs: {
-      // "keyword": "cat",
-      "cursor": "0",
-      "count": "20",
-      "hot_search": "0",
-      "is_pull_refresh": "1",
-      "search_source": "challenge",
-      ...qs
-    }
-  });
-}
-
-getUserInfoByUid = ({ user_id }) => {
-  return request(API_ENDPOINT+'/user/', {user_id});
-}
-
-getUserPostByUid = ({ user_id, max_cursor, count }) => {
-  return request(API_ENDPOINT+'/aweme/post/', {qs: {user_id, max_cursor, count}});
-}
-
-getAllUserPostByUid = ({ user_id }) => {
-  return new Promise(resolve => {
-    max_cursor = null;
-
-    let posts = [];
-
-    async.doWhilst(
-      cb => {
-        getUserPostByUid({ count: 25, user_id, max_cursor })
-          .then(data => {
-            posts = posts.concat(data.aweme_list);
-
-            max_cursor = null;
-
-            if (data.has_more) max_cursor = data.max_cursor;
-
-            cb();
-          })
-          .catch(cb);
-      }, 
-      () => max_cursor,
-      (err, data) => {
-        if (err) throw err;
-
-        resolve(posts);
+  searchSingle(qs) {
+    return request(this.API_ENDPOINT+'/general/search/single/', {
+      qs: {
+        // "keyword": "cat",
+        "offset": "0",
+        "count": "10",
+        "is_pull_refresh": "0",
+        "hot_search": "0",
+        ...qs
       }
-    );
-  });
+    });
+  }
+
+  searchItem(qs) {
+    return request(this.API_ENDPOINT+'/search/item/', {
+      qs: {
+        // "keyword": "cat",
+        "offset": "0",
+        "count": "10",
+        "source": "video_search",
+        "is_pull_refresh": "1",
+        "hot_search": "0",
+        ...qs
+      }
+    });
+  }
+
+  searchAll(qs) {
+    return request(this.API_ENDPOINT+'/discover/search/', {
+      qs: {
+        // "keyword": "cat",
+        "cursor": "0",
+        "count": "10",
+        "type": "1",
+        "is_pull_refresh": "1",
+        "hot_search": "0",
+        ...qs
+      }
+    });
+  }
+
+  searchMusic(qs) {
+    return request(this.API_ENDPOINT+'/music/search/', {
+      qs: {
+        // "keyword": "cat",
+        "cursor": "0",
+        "count": "10",
+        "is_pull_refresh": "1",
+        "hot_search": "0",
+        ...qs
+      }
+    });
+  }
+
+  searchChallenge(qs) {
+    return request(this.API_ENDPOINT+'/challenge/search/', {
+      qs: {
+        // "keyword": "cat",
+        "cursor": "0",
+        "count": "20",
+        "hot_search": "0",
+        "is_pull_refresh": "1",
+        "search_source": "challenge",
+        ...qs
+      }
+    });
+  }
+
+  getUserInfoByUid({ user_id }) {
+    return request(this.API_ENDPOINT+'/user/', {user_id});
+  }
+
+  getUserPostByUid({ user_id, max_cursor, count }) {
+    return request(this.API_ENDPOINT+'/aweme/post/', {qs: {user_id, max_cursor, count}});
+  }
+
+  getAllUserPostByUid({ user_id }) {
+    return new Promise(resolve => {
+      max_cursor = null;
+
+      let posts = [];
+
+      async.doWhilst(
+        cb => {
+          getUserPostByUid({ count: 25, user_id, max_cursor })
+            .then(data => {
+              posts = posts.concat(data.aweme_list);
+
+              max_cursor = null;
+
+              if (data.has_more) max_cursor = data.max_cursor;
+
+              cb();
+            })
+            .catch(cb);
+        }, 
+        () => max_cursor,
+        (err, data) => {
+          if (err) throw err;
+
+          resolve(posts);
+        }
+      );
+    });
+  }
 }
 
-// searchItem({ keyword: '猫' }).then(console.log);
-// searchMusic({ keyword: '猫' }).then(console.log);
-// searchChallenge({ keyword: '猫' }).then(console.log);
-// searchAll({ keyword: 'xxn520' }).then(console.log);
-// getSuggestions({ keyword: '猫' }).then(console.log);
-// getFeed().then(console.log);
-// getUserInfoByUid({ user_id: 95599520856 }).then(console.log);
-// getUserPostByUid({ user_id: 82480311983, count: 10 }).then(console.log);
-// getAllUserPostByUid({ user_id: 82480311983 }).then(res => console.log(res.length));
-
-module.exports = { request, getFeed, getSuggestions, searchSingle, searchItem, searchAll, searchMusic, searchChallenge, getUserInfoByUid, getUserPostByUid, getAllUserPostByUid }
+module.exports = tiktok;
