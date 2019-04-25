@@ -46,7 +46,7 @@ class tiktok {
   constructor(country = null) {
     this.API_ENDPOINT = 'https://aweme.snssdk.com/aweme/v1';
 
-    if (country.toLowerCase() === 'vn') this.API_ENDPOINT = 'https://api.tiktokv.com/aweme/v1';
+    if (country && country.toLowerCase() === 'vn') this.API_ENDPOINT = 'https://api.tiktokv.com/aweme/v1';
   }
 
   getFeed(qs) {
