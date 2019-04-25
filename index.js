@@ -44,7 +44,7 @@ request = request.defaults({
 
 class tiktok {
   constructor(country = null) {
-    const API_ENDPOINT = 'https://aweme.snssdk.com/aweme/v1';
+    this.API_ENDPOINT = 'https://aweme.snssdk.com/aweme/v1';
 
     if (country.toLowerCase() === 'vn') this.API_ENDPOINT = 'https://api.tiktokv.com/aweme/v1';
   }
