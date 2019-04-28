@@ -3,50 +3,66 @@ const async = require('async');
 
 request = request.defaults({
   qs: {
-    "js_sdk_version": "1.2.2",
+    "source": "discover",
+    "ts": "1556178331",
+    "js_sdk_version": "",
     "app_type": "normal",
-    "manifest_version_code": "310",
-    "_rticket": Date.now(),
-    "ac": "wifi",
-    "device_id": "57969996079",
-    "iid": "50021145892",
-    "os_version": "1",
-    "channel": "a",
-    "version_code": "310",
-    "device_type": "a",
+    "manifest_version_code": "583",
+    "_rticket": "1556178332328",
+    "app_language": "en",
+    "iid": "6683055906148435713",
+    "channel": "googleplay",
+    "device_type": "MIX%202",
     "language": "en",
-    "resolution": "1",
-    "openudid": "a",
-    "update_version_code": "3102",
-    "app_name": "aweme",
-    "version_name": "3.1.0",
+    "account_region": "VN",
+    "resolution": "1080*2030",
+    "openudid": "b19f5ff713b925ef",
+    "update_version_code": "5830",
+    "sys_region": "US",
     "os_api": "26",
-    "device_brand": "a",
-    "ssmix": "a",
-    "device_platform": "a",
+    "uoo": "0",
+    "is_my_cn": "0",
+    "timezone_name": "Asia%2FHo_Chi_Minh",
     "dpi": "440",
-    "aid": "1128",
+    "carrier_region": "VN",
+    "ac": "wifi",
+    "device_id": "6620810330052445697",
+    "pass-route": "1",
+    "mcc_mnc": "45204",
+    "os_version": "8.0.0",
+    "timezone_offset": "25200",
+    "version_code": "583",
+    "carrier_region_v2": "452",
+    "app_name": "trill",
+    "ab_version": "5.8.3",
+    "version_name": "5.8.3",
+    "device_brand": "Xiaomi",
+    "ssmix": "a",
+    "pass-region": "1",
+    "device_platform": "android",
+    "build_number": "5.8.3",
+    "region": "US",
+    "aid": "1180",
     "as": "a1qwert123",
-    "cp": "cbfhckdckkde1",
-    "mas": "01789a14712db6c002c200d78d120c2e534c4cec1c8c1ca64646ec"
+    "cp": "cbfhckdckkde1"
   },
   headers: {
-    'User-Agent': 'com.ss.android.ugc.aweme/310 (Linux; U; Android 8.0.0; en_US; MIX 2; Build/OPR1.170623.027; Cronet/58.0.2991.0)',
+    'User-Agent': 'com.ss.android.ugc.trill/584 (Linux; U; Android 5.1.1; en_US; LG-H961N;',
     'X-SS-REQ-TICKET': '1541500434739',
     'X-Tt-Token': '002447bd7d6a5c792cb223b1151e399e0402e5fdcf768ab9f96930b63dc169d353480340ec7abaa1856d8133dcfe12363b42',
     'sdk-version': '1',
     'X-SS-TC': '0',
   },
   json: 1,
-  // proxy: 'http://localhost:8888',
-  // strictSSL: false
+  proxy: 'http://localhost:8080',
+  strictSSL: false
 });
 
 class tiktok {
   constructor(country = null) {
-    this.API_ENDPOINT = 'https://aweme.snssdk.com/aweme/v1';
+    this.API_ENDPOINT = 'https://api2.musical.ly/aweme/v1';
 
-    if (country && country.toLowerCase() === 'vn') this.API_ENDPOINT = 'https://api.tiktokv.com/aweme/v1';
+    if (country && country.toLowerCase() === 'vn') this.API_ENDPOINT = 'https://api21-h2.tiktokv.com/aweme/v1';
   }
 
   getFeed(qs) {
