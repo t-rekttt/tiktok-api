@@ -54,7 +54,7 @@ request = request.defaults({
     'X-SS-TC': '0',
   },
   json: 1,
-  proxy: 'http://localhost:8080',
+//   proxy: 'http://localhost:8080',
   strictSSL: false
 });
 
